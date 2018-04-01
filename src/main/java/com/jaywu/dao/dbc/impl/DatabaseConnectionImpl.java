@@ -1,15 +1,17 @@
-package com.jaywu.dao.dbc;
+package com.jaywu.dao.dbc.impl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import com.jaywu.dao.dbc.IDatabaseConnection;
 
 /**
  * 连接数据专用类
  * @author Wujie
  *
  */
-public class DatabaseConnection {
+public class DatabaseConnectionImpl implements IDatabaseConnection{
 	/**
 	 * 连接数据库信息
 	 */
@@ -22,7 +24,7 @@ public class DatabaseConnection {
 	/**
 	 * 构造方法中获取数据库连接
 	 */
-	public DatabaseConnection() {
+	public DatabaseConnectionImpl() {
 		try {
 			Class.forName(DRIVERCLASS);
 			connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
@@ -51,7 +53,7 @@ public class DatabaseConnection {
 	}
 	
 	public static void main(String[] args) {
-		DatabaseConnection data = new DatabaseConnection();
+		IDatabaseConnection data = DatabaseConnectionFactory.getInstance();
 		System.out.println(data.getConnection());
 	}
 }
