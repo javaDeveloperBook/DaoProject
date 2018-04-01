@@ -1,4 +1,4 @@
-package com.jaywu.dao;
+package com.jaywu.dao.dbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
