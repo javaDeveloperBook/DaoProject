@@ -12,8 +12,6 @@ import com.jaywu.factory.IEmpServiceFactory;
 import com.jaywu.service.IEmpService;
 import com.jaywu.vo.Emp;
 
-import oracle.net.aso.i;
-
 /**
  * 测试业务层
  * 
@@ -64,20 +62,20 @@ public class TestIEmpService {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void testGet() {
 		IEmpService service = IEmpServiceFactory.getInstance();
 		try {
 			Emp emp = service.get(8888);
-			System.out.println("姓名："+emp.getEname()+",工资："+emp.getSal());
+			System.out.println("姓名：" + emp.getEname() + ",工资：" + emp.getSal());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
-	public void testListAll(){
+	public void testListAll() {
 		IEmpService service = IEmpServiceFactory.getInstance();
 		try {
 			List<Emp> list = service.list();
@@ -89,16 +87,16 @@ public class TestIEmpService {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testListPage() {
 		IEmpService service = IEmpServiceFactory.getInstance();
 		try {
-			Map<String, Object> map = service.list(1, 5, "job","En");
+			Map<String, Object> map = service.list(1, 5, "job", "En");
 			int count = (Integer) map.get("empCount");
-			System.out.println("total："+count);
-			List<Emp> list =  (List<Emp>) map.get("allEmps");
+			System.out.println("total：" + count);
+			List<Emp> list = (List<Emp>) map.get("allEmps");
 			Iterator<Emp> iterator = list.iterator();
 			while (iterator.hasNext()) {
 				System.out.println(iterator.next());
@@ -107,14 +105,15 @@ public class TestIEmpService {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void testDelete() {
 		IEmpService service = IEmpServiceFactory.getInstance();
 		HashSet<Integer> ids = new HashSet<Integer>();
 		ids.add(8888);
 		try {
-			System.out.println(service.delete(ids));;
+			System.out.println(service.delete(ids));
+			;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
