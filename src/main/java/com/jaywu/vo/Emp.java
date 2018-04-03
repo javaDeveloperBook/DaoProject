@@ -50,7 +50,7 @@ public class Emp implements Serializable {
 	/**
 	 * 部门编号
 	 */
-	private Integer deptno;
+	private Dept dept;
 
 	public Integer getEmpno() {
 		return empno;
@@ -108,17 +108,18 @@ public class Emp implements Serializable {
 		this.comm = comm;
 	}
 
-	public Integer getDeptno() {
-		return deptno;
+	public Dept getDept() {
+		return dept;
 	}
 
-	public void setDeptno(Integer deptno) {
-		this.deptno = deptno;
+	public void setDept(Dept dept) {
+		this.dept = dept;
 	}
 
 	@Override
 	public String toString() {
 		return "Emp [empno=" + empno + ", ename=" + ename + ", job=" + job + ", mgr=" + mgr + ", hiredate=" + hiredate
-				+ ", sal=" + sal + ", comm=" + comm + ", deptno=" + deptno + "]";
+				+ ", sal=" + sal + ", comm=" + comm + ", dept=" + dept + "]";
 	}
+
 }

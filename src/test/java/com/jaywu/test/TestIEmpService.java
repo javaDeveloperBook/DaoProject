@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.jaywu.factory.IEmpServiceFactory;
 import com.jaywu.service.IEmpService;
+import com.jaywu.vo.Dept;
 import com.jaywu.vo.Emp;
 
 /**
@@ -23,15 +24,20 @@ public class TestIEmpService {
 	@Test
 	public void testInsert() {
 		// 组装数据
+		Dept deptVo = new Dept();
+		deptVo.setDeptno(10);
+		deptVo.setDeptname("ACCOUNTING");
+		deptVo.setLoc("NEW YORK");
+		
 		Emp vo = new Emp();
 		vo.setEmpno(8888);
-		vo.setEname("jaywu");
+		vo.setEname("Jaywu");
 		vo.setJob("Enginer");
 		vo.setMgr(7839);
 		vo.setHiredate(new Date());
 		vo.setSal(1000.00);
 		vo.setComm(1000.00);
-		vo.setDeptno(10);
+		vo.setDept(deptVo);
 
 		// 插入数据
 		IEmpService service = IEmpServiceFactory.getInstance();
@@ -44,6 +50,11 @@ public class TestIEmpService {
 
 	@Test
 	public void testUpdate() {
+		Dept deptVo = new Dept();
+		deptVo.setDeptno(20);
+		deptVo.setDeptname("RESEARCH");
+		deptVo.setLoc("DALLAS");
+		
 		Emp vo = new Emp();
 		vo.setEmpno(8888);
 		vo.setEname("Jaywu");
@@ -52,7 +63,7 @@ public class TestIEmpService {
 		vo.setHiredate(new Date());
 		vo.setSal(99999.00);
 		vo.setComm(1000.00);
-		vo.setDeptno(10);
+		vo.setDept(deptVo);
 
 		// 修改数据
 		IEmpService service = IEmpServiceFactory.getInstance();
@@ -68,7 +79,7 @@ public class TestIEmpService {
 		IEmpService service = IEmpServiceFactory.getInstance();
 		try {
 			Emp emp = service.get(8888);
-			System.out.println("姓名：" + emp.getEname() + ",工资：" + emp.getSal());
+			System.out.println("姓名：" + emp.getEname() + ",工资：" + emp.getSal()+",部门："+emp.getDept().getDeptname()+",工作地址："+emp.getDept().getLoc());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

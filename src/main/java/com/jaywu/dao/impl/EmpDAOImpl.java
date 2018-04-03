@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.jaywu.dao.IEmpDAO;
+import com.jaywu.vo.Dept;
 import com.jaywu.vo.Emp;
 
 public class EmpDAOImpl implements IEmpDAO {
@@ -34,7 +35,7 @@ public class EmpDAOImpl implements IEmpDAO {
 		this.pStatement.setDate(5, new java.sql.Date(vo.getHiredate().getTime()));
 		this.pStatement.setDouble(6, vo.getSal());
 		this.pStatement.setDouble(7, vo.getComm());
-		this.pStatement.setInt(8, vo.getDeptno());
+		this.pStatement.setInt(8, vo.getDept().getDeptno());
 		return this.pStatement.executeUpdate() > 0;
 	}
 
@@ -50,7 +51,7 @@ public class EmpDAOImpl implements IEmpDAO {
 		this.pStatement.setDate(4, new java.sql.Date(vo.getHiredate().getTime()));
 		this.pStatement.setDouble(5, vo.getSal());
 		this.pStatement.setDouble(6, vo.getComm());
-		this.pStatement.setInt(7, vo.getDeptno());
+		this.pStatement.setInt(7, vo.getDept().getDeptno());
 		this.pStatement.setInt(8, vo.getEmpno());
 		return this.pStatement.executeUpdate() > 0;
 	}
@@ -70,11 +71,12 @@ public class EmpDAOImpl implements IEmpDAO {
 	public Emp findById(Integer id) throws SQLException {
 		Emp vo = null;
 		StringBuffer sql = new StringBuffer();
-		sql.append(" SELECT empno,ename,job,mgr,hiredate,sal,comm,deptno FROM emp WHERE empno = ? ");
+		sql.append(" SELECT e.empno,e.ename,e.job,e.mgr,e.hiredate,e.sal,e.comm,d.deptno,d.dname,d.loc FROM emp e ,dept d WHERE e.deptno = d.deptno AND e.empno = ? ");
 		this.pStatement = this.connection.prepareStatement(sql.toString());
 		this.pStatement.setInt(1, id);
 		ResultSet resultSet = this.pStatement.executeQuery();
 		if (resultSet.next()) {
+			//雇员信息
 			vo = new Emp();
 			vo.setEmpno(resultSet.getInt(1));
 			vo.setEname(resultSet.getString(2));
@@ -83,7 +85,13 @@ public class EmpDAOImpl implements IEmpDAO {
 			vo.setHiredate(resultSet.getDate(5));
 			vo.setSal(resultSet.getDouble(6));
 			vo.setComm(resultSet.getDouble(7));
-			vo.setDeptno(resultSet.getInt(8));
+			//雇员所在部门信息
+			Dept deptVo = new Dept();
+			deptVo.setDeptno(resultSet.getInt(8));
+			deptVo.setDeptname(resultSet.getString(9));
+			deptVo.setLoc(resultSet.getString(10));
+			//关联雇员和部门
+			vo.setDept(deptVo);
 		}
 		return vo;
 	}
@@ -91,10 +99,11 @@ public class EmpDAOImpl implements IEmpDAO {
 	public List<Emp> findAll() throws SQLException {
 		List<Emp> list = new ArrayList<Emp>();
 		StringBuffer sql = new StringBuffer();
-		sql.append(" SELECT empno,ename,job,mgr,hiredate,sal,comm,deptno FROM emp ");
+		sql.append("SELECT e.empno,e.ename,e.job,e.mgr,e.hiredate,e.sal,e.comm,d.deptno,d.dname,d.loc FROM emp e ,dept d WHERE e.deptno = d.deptno ");
 		this.pStatement = this.connection.prepareStatement(sql.toString());
 		ResultSet resultSet = this.pStatement.executeQuery();
 		while (resultSet.next()) {
+			//雇员信息
 			Emp vo = new Emp();
 			vo.setEmpno(resultSet.getInt(1));
 			vo.setEname(resultSet.getString(2));
@@ -103,7 +112,14 @@ public class EmpDAOImpl implements IEmpDAO {
 			vo.setHiredate(resultSet.getDate(5));
 			vo.setSal(resultSet.getDouble(6));
 			vo.setComm(resultSet.getDouble(7));
-			vo.setDeptno(resultSet.getInt(8));
+			//雇员所在部门信息
+			Dept deptVo = new Dept();
+			deptVo.setDeptno(resultSet.getInt(8));
+			deptVo.setDeptname(resultSet.getString(9));
+			deptVo.setLoc(resultSet.getString(10));
+			//关联雇员和部门
+			vo.setDept(deptVo);
+			
 			list.add(vo);
 		}
 		return list;
@@ -113,8 +129,8 @@ public class EmpDAOImpl implements IEmpDAO {
 		List<Emp> list = new ArrayList<Emp>();
 		StringBuffer sql = new StringBuffer();
 		sql.append(" SELECT * FROM ");
-		sql.append(" ( SELECT empno,ename,job,mgr,hiredate,sal,comm,deptno,ROWNUM rn ");
-		sql.append(" FROM emp WHERE " + colmun + " LIKE  ? AND ROWNUM <= ? ) temp ");
+		sql.append(" ( SELECT e.empno,e.ename,e.job,e.mgr,e.hiredate,e.sal,e.comm,e.deptno,d.deptno,d.dname,d.loc,ROWNUM rn ");
+		sql.append(" FROM emp e , dept d WHERE e.deptno = d.deptno " + colmun + " LIKE  ? AND ROWNUM <= ? ) temp ");
 		sql.append(" WHERE temp.rn > ? ");
 		this.pStatement = this.connection.prepareStatement(sql.toString());
 		this.pStatement.setString(1, "%" + keyWord + "%");
@@ -130,7 +146,13 @@ public class EmpDAOImpl implements IEmpDAO {
 			vo.setHiredate(resultSet.getDate(5));
 			vo.setSal(resultSet.getDouble(6));
 			vo.setComm(resultSet.getDouble(7));
-			vo.setDeptno(resultSet.getInt(8));
+			//雇员所在部门信息
+			Dept deptVo = new Dept();
+			deptVo.setDeptno(resultSet.getInt(8));
+			deptVo.setDeptname(resultSet.getString(9));
+			deptVo.setLoc(resultSet.getString(10));
+			//关联雇员和部门
+			vo.setDept(deptVo);
 			list.add(vo);
 		}
 		return list;

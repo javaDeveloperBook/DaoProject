@@ -20,7 +20,7 @@ public class DatabaseConnectionImpl implements IDatabaseConnection {
 	private static final String DRIVERCLASS = "oracle.jdbc.driver.OracleDriver";
 	private static final String URL = "jdbc:oracle:thin:@127.0.0.1:1521:orcl";
 	private static final String USERNAME = "scott";
-	private static final String PASSWORD = "root";
+	private static final String PASSWORD = "tiger";
 	private Connection connection;
 
 	/**
